@@ -1,8 +1,9 @@
 use std::collections::HashMap;
+use std::rc::Rc;
+
+use serde::Deserialize;
 
 use crate::model::{Line, Location, Node};
-use serde::Deserialize;
-use std::rc::Rc;
 
 #[derive(Deserialize, Debug)]
 struct JsonNode {
@@ -13,14 +14,14 @@ struct JsonNode {
 }
 
 #[derive(Deserialize, Debug)]
-struct JsonLine {
+pub(crate) struct JsonLine {
     id: u64,
     nodes: Vec<JsonNode>,
     tags: HashMap<String, String>,
 }
 
 impl JsonLine {
-    fn parse(line: &str) -> Line {
+    pub fn parse(line: &str) -> Line {
         let des: JsonLine = serde_json::from_str(line).unwrap();
         Line {
             id: des.id,
@@ -38,12 +39,14 @@ impl JsonLine {
                 .collect(),
         }
     }
+
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parser::JsonLine;
     use std::fs;
+
+    use crate::parser::JsonLine;
 
     #[test]
     fn it_works() {
