@@ -1,0 +1,43 @@
+{
+  "id": 4271298,
+  "nodes": [
+    {
+      "id": 25607538,
+      "latitude": 43.522049100000004,
+      "longitude": -5.637934600000004,
+      "tags": {
+        "highway": "motorway_junction",
+        "ref": "378"
+      }
+    },
+    {
+      "id": 25607535,
+      "latitude": 43.521996300000005,
+      "longitude": -5.637768400000004,
+      "tags": {}
+    },
+    {
+      "id": 5262364335,
+      "latitude": 43.52186200000016,
+      "longitude": -5.637366399999993,
+      "tags": {}
+    },
+    {
+      "id": 25607534,
+      "latitude": 43.5217243,
+      "longitude": -5.636988600000004,
+      "tags": {
+        "side": "right",
+        "maxspeed:forward": "80",
+        "traffic_sign:forward": "ES:R301",
+        "source:maxspeed": "sign",
+        "traffic_sign": "maxspeed"
+      }
+    }
+  ],
+  "tags": {
+    "name": "Salida Xixón (Viesques)",
+    "surface": "asphalt",
+    "maxspeed": "100"
+  }
+}
