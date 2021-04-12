@@ -1,9 +1,11 @@
+use std::collections::{BTreeMap, HashMap};
 use std::error::Error;
 use std::fs::File;
 use std::io::{self, BufRead};
 
 use clap::{App, Arg, ArgMatches};
 
+use crate::model::Line;
 use crate::parser::*;
 
 mod parser;
@@ -46,12 +48,19 @@ fn get_arguments() -> ArgMatches<'static> {
 fn main() -> Result<(), Box<dyn Error>> {
     let args = get_arguments();
 
+    // let mut nodes: BTreeMap<u64, Line> = BTreeMap::new();
+    let mut nodes: HashMap<u64, Line> = HashMap::new();
+
     let file = File::open(args.value_of("INPUT").unwrap())?;
     let lines = io::BufReader::new(file).lines();
     for line in lines {
         if let Ok(json) = line {
-            println!("{}", JsonLine::parse(&json));
+            let line = JsonLine::parse(&json);
+            nodes.insert(line.id, line);
         }
     }
+
+    println!("Indexed!");
+    println!("{}", nodes.len());
     Ok(())
 }
