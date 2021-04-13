@@ -1,6 +1,6 @@
 [package]
-name = "binary_tree"
-description = "Binary tree memory usage comparation."
+name = "rust-performance"
+description = "Binary tree and HashMap memory usage comparation."
 version = "0.1.0"
 authors = ["Angel Cervera Claudio"]
 edition = "2018"

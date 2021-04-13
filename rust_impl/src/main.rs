@@ -49,18 +49,18 @@ fn main() -> Result<(), Box<dyn Error>> {
     let args = get_arguments();
 
     // let mut nodes: BTreeMap<u64, Line> = BTreeMap::new();
-    let mut nodes: HashMap<u64, Line> = HashMap::new();
+    let mut line_map: HashMap<u64, Line> = HashMap::new();
 
     let file = File::open(args.value_of("INPUT").unwrap())?;
     let lines = io::BufReader::new(file).lines();
     for line in lines {
         if let Ok(json) = line {
             let line = JsonLine::parse(&json);
-            nodes.insert(line.id, line);
+            line_map.insert(line.id, line);
         }
     }
 
     println!("Indexed!");
-    println!("{}", nodes.len());
+    println!("{}", line_map.len());
     Ok(())
 }

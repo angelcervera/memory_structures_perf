@@ -21,15 +21,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "binary_tree"
-version = "0.1.0"
-dependencies = [
- "clap",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "bitflags"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -87,6 +78,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3d0b9745dc2debf507c8422de05d7226cc1f0644216dfdfead988f9b1ab32a7"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "rust-performance"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
