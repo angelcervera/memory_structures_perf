@@ -2,24 +2,43 @@ package com.acervera.performance
 
 import scopt.OParser
 
-sealed trait IndexType
+import scala.collection.{immutable, mutable}
 
-object IndexType {
-  def builder(txt: String): IndexType =
-    txt match {
-      case "hashmap" => HashMapType
-      case "btree"   => BTMapType
-      case _         => throw new IllegalArgumentException(s"[$txt] is not supported")
+sealed trait IndexType {
+    def createMap[T]: collection.Map[Long, T] = this match {
+      case IHashMapType => immutable.HashMap.empty
+      case IBTMapType => immutable.TreeMap.empty
+      case MHashMapType => mutable.HashMap.empty
+      case MBTMapType => mutable.TreeMap.empty
     }
 }
 
-case object HashMapType extends IndexType
-case object BTMapType extends IndexType
+object IndexType {
+
+  private val values = Seq("i_hashmap", "i_treemap", "m_hashmap", "m_treemap")
+
+  def builder(txt: String): IndexType =
+    txt match {
+      case "i_hashmap" => IHashMapType
+      case "i_treemap"   => IBTMapType
+      case "m_hashmap" => MHashMapType
+      case "m_treemap"  => MBTMapType
+      case _         => throw new IllegalArgumentException(s"[$txt] is not supported. Valid values are [${values.mkString(",")}]")
+    }
+}
+
+case object IHashMapType extends IndexType
+
+case object IBTMapType extends IndexType
+
+case object MHashMapType extends IndexType
+
+case object MBTMapType extends IndexType
 
 case class Config(
-    nodesIdx: IndexType = HashMapType,
-    waysIdx: IndexType = HashMapType,
-    inputPath: String = ""
+                   nodesIdx: IndexType = IHashMapType,
+                   waysIdx: IndexType = IHashMapType,
+                   inputPath: String = ""
 )
 
 object Config {

@@ -11,8 +11,8 @@ object Main {
       case Some(cfg) =>
         run(
           File(cfg.inputPath),
-          immutable.HashMap.empty,
-          immutable.HashMap.empty
+          cfg.nodesIdx.createMap,
+          cfg.waysIdx.createMap,
         )
       case _ =>
     }
@@ -20,10 +20,10 @@ object Main {
 
   def run(
       inputFile: File,
-      nodes: Map[Long, Node],
-      ways: Map[Long, Line]
+      nodes: collection.Map[Long, Node],
+      ways: collection.Map[Long, Line]
   ): Unit = {
-    val updatedLines = inputFile.lineIterator.foldLeft[Map[Long, Line]](ways)((m, json) => {
+    val updatedLines = inputFile.lineIterator.foldLeft[collection.Map[Long, Line]](ways)((m, json) => {
       val line = Parser.parser(json)
       m + (line.id -> line)
     })

@@ -1,4 +1,4 @@
-``text
+```text
 PoC to test memory improvements using different structures to store the spacial data.
 
 USAGE:
@@ -14,7 +14,7 @@ OPTIONS:
 
 ARGS:
 <INPUT>    Sets the input file to use
-``
+```
 
 ## Build
 ```bash
