@@ -4,12 +4,21 @@ import scopt.OParser
 
 import scala.collection.{immutable, mutable}
 
-sealed trait IndexType {
-    def createMap[T]: collection.Map[Long, T] = this match {
+sealed trait IndexType
+
+sealed trait Immutable {
+  def createMap[T]: immutable.Map[Long, T] =
+    this match {
       case IHashMapType => immutable.HashMap.empty
-      case IBTMapType => immutable.TreeMap.empty
+      case IBTMapType   => immutable.TreeMap.empty
+    }
+}
+
+sealed trait Mutable {
+  def createMap[T]: mutable.Map[Long, T] =
+    this match {
       case MHashMapType => mutable.HashMap.empty
-      case MBTMapType => mutable.TreeMap.empty
+      case MBTMapType   => mutable.TreeMap.empty
     }
 }
 
@@ -20,25 +29,27 @@ object IndexType {
   def builder(txt: String): IndexType =
     txt match {
       case "i_hashmap" => IHashMapType
-      case "i_treemap"   => IBTMapType
+      case "i_treemap" => IBTMapType
       case "m_hashmap" => MHashMapType
-      case "m_treemap"  => MBTMapType
-      case _         => throw new IllegalArgumentException(s"[$txt] is not supported. Valid values are [${values.mkString(",")}]")
+      case "m_treemap" => MBTMapType
+      case _ =>
+        throw new IllegalArgumentException(
+          s"[$txt] is not supported. Valid values are [${values.mkString(",")}]"
+        )
     }
 }
 
-case object IHashMapType extends IndexType
+case object IHashMapType extends IndexType with Immutable
 
-case object IBTMapType extends IndexType
+case object IBTMapType extends IndexType with Immutable
 
-case object MHashMapType extends IndexType
+case object MHashMapType extends IndexType with Mutable
 
-case object MBTMapType extends IndexType
+case object MBTMapType extends IndexType with Mutable
 
 case class Config(
-                   nodesIdx: IndexType = IHashMapType,
-                   waysIdx: IndexType = IHashMapType,
-                   inputPath: String = ""
+    waysIdx: IndexType = IHashMapType,
+    inputPath: String = ""
 )
 
 object Config {
@@ -47,12 +58,6 @@ object Config {
 
     val builder = OParser.builder[Config]
     import builder._
-
-    def addNodesIdx =
-      opt[String]("nodes")
-        .valueName("INDEX_TYPE")
-        .action((x, c) => c.copy(nodesIdx = IndexType.builder(x)))
-        .text("Type of index used to store nodes")
 
     def addWaysIdx =
       opt[String]("ways")
@@ -68,7 +73,6 @@ object Config {
     val parser = OParser.sequence(
       programName("scala-performance-<version>.jar"),
       head("Scala performance using HashMap and BTreeMap", "0.0.1-SNAPSHOT"),
-      addNodesIdx,
       addWaysIdx,
       addInput
     )
